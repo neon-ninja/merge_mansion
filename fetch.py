@@ -13,11 +13,11 @@ for area in tqdm(areas):
     svgs = s.get(BASE_URL + area.attrs['href']).html.find("a[href$=svg]")
     for svg in svgs:
         svg_link = BASE_URL + svg.attrs["href"]
-        filename = os.path.basename(svg_link)
+        filename = os.path.basename(svg_link).replace("%27", "")
         if not os.path.exists(filename):
             with open(filename, "wb") as f:
                 f.write(s.get(svg_link).content)
-        index += f"<{filename}>  \n"
+        index += f"[{filename}]({filename})  \n"
 
 with open("README.md", "w") as f:
     f.write(index)
